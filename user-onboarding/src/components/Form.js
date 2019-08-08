@@ -1,49 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form as FormikForm, Field, withFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 import UserList from './UserList';
 
-function Form ({ errors, touched, values, handleSubmit, status }) {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    if (status) {
-      setUsers([...users, status])
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: []
     }
-  }, [status])
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.status !== prevProps.status && this.props.status) {
+      this.setState({
+        users: [...this.state.users, this.props.status]
+      })
+    }
+  }
+
+  render() {
   return (
     <div>
     <div className="form">
       <h1 style={{marginBottom: '0', color: 'rgb(89, 95, 99)', marginLeft: '-65px'}}>Register</h1>
       <FormikForm style={{display: 'flex', flexDirection: 'column', margin: '20px'}}>
         <Field type="text" name="name" placeholder="Name" />
-        {touched.name && errors.name && (
-          <p className="error">{errors.name}</p>
+        {this.props.touched.name && this.props.errors.name && (
+          <p className="error">{this.props.errors.name}</p>
         )}
         <Field type="text" name="email" placeholder="Email" />
-        {touched.email && errors.email && (
-          <p className="error">{errors.email}</p>
+        {this.props.touched.email && this.props.errors.email && (
+          <p className="error">{this.props.errors.email}</p>
         )}
         <Field type="text" name="password" placeholder="Password" />
-        {touched.password && errors.password && (
-          <p className="error">{errors.password}</p>
+        {this.props.touched.password && this.props.errors.password && (
+          <p className="error">{this.props.errors.password}</p>
         )}
         <div style={{display: 'flex', alignContent: 'center'}}>
           <Field style={{width: '20px', background: 'rgba(120, 166, 189, 1)', marginBottom: '5px'}}
             type="checkbox"
             name="terms"
-            checked={values.terms}
+            checked={this.props.values.terms}
           />
           <p style={{margin: '5px', fontSize: '12px', color: 'rgb(125, 125, 125)'}}>Terms of Service</p>
         </div>
         <button type="submit">Submit</button>
       </FormikForm>
     </div>
-      <UserList users={users} />
+      <UserList users={this.state.users} />
     </div>
   )
+  }
 }
 
 const FormikOnboardingForm = withFormik({
