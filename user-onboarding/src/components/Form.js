@@ -16,7 +16,8 @@ function Form ({ errors, touched, values, handleSubmit, status }) {
   return (
     <div>
     <div className="form">
-      <FormikForm style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: '20px'}}>
+      <h1 style={{marginBottom: '0', color: 'rgb(89, 95, 99)', marginLeft: '-65px'}}>Register</h1>
+      <FormikForm style={{display: 'flex', flexDirection: 'column', margin: '20px'}}>
         <Field type="text" name="name" placeholder="Name" />
         {touched.name && errors.name && (
           <p className="error">{errors.name}</p>
